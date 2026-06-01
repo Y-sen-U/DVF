@@ -26,7 +26,7 @@ DVF/
 
 ## 🚀 快速开始
 
-### 降分辨率模式（有GT）
+### 降分辨率模式
 
 ```bash
 # 使用命令行参数
@@ -40,7 +40,7 @@ python train/reduce_train_simple_v2.py \
 python train/reduce_train_simple_v2.py --config configs/config_reduce_simple.yaml
 ```
 
-### 全分辨率模式（无GT）
+### 全分辨率模式
 
 ```bash
 # 使用命令行参数
