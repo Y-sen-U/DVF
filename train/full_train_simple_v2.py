@@ -21,6 +21,7 @@ import argparse
 import time
 from torch.nn import functional as F
 import logging
+import yaml
 
 class Param(nn.Module):
     def __init__(self, data):
@@ -69,11 +70,13 @@ def check_makedir(dir):
 
 def main():
     parser = argparse.ArgumentParser(description='DVF Full Resolution Training (Simple Version)')
+    parser.add_argument('--config', default=None, type=str, help='Path to YAML config file')
     parser.add_argument('--sensor', default='WV3', type=str, help='Sensor name (WV2/WV3/QB/GF2)')
     parser.add_argument('--lam1', default=0.187, type=float, help='Lambda 1 parameter')
     parser.add_argument('--lam2', default=0.383, type=float, help='Lambda 2 parameter')
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
-    parser.add_argument('--init', default=True, action='store_true', help='Initialize parameters')
+    parser.add_argument('--init', action='store_true', help='Initialize parameters')
+    parser.add_argument('--no-init', action='store_true', help='Disable initialization')
     parser.add_argument('--init_epochs', default=6000, type=int, help='Number of initialization epochs')
     parser.add_argument('--train_epochs', default=3000, type=int, help='Number of training epochs')
     parser.add_argument('--device', default='cuda:0', type=str, help='Device to use')
@@ -85,6 +88,15 @@ def main():
     parser.add_argument('--xnet_dir', default='./Data/xnet_data', type=str, help='Xnet data directory')
     
     args = parser.parse_args()
+    
+    if args.config is not None:
+        with open(args.config, 'r') as f:
+            config = yaml.safe_load(f)
+            for key, value in config.items():
+                if key not in ['max_value', 'channel', 'bands'] and getattr(args, key, None) is not None:
+                    setattr(args, key, value)
+    
+    args.init = not args.no_init
     
     device = torch.device(args.device)
     sensor = args.sensor
