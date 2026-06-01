@@ -1,4 +1,4 @@
-# DVF - Deep Visual Fusion for Pansharpening
+# Deep Variational Fusion: A New Framework to Learn Energy-Driven Distribution Mapping for Zero-Shot Pansharpening
 
 > 在已有 Pansharpening 方法输出的初始 HRMS 结果基础上，对每张测试样本做**样本级两阶段交替优化**，结合 MTF 退化模型与可学习权重网络，进一步提升光谱保真度与空间细节。
 
@@ -32,9 +32,6 @@ DVF/
 # 使用命令行参数
 python train/reduce_train_simple_v2.py \
     --sensor WV3 \
-    --init_model DCFNet \
-    --lam1 0.06 \
-    --lam2 0.94
 
 # 使用配置文件
 python train/reduce_train_simple_v2.py --config configs/config_reduce_simple.yaml
@@ -46,9 +43,6 @@ python train/reduce_train_simple_v2.py --config configs/config_reduce_simple.yam
 # 使用命令行参数
 python train/full_train_simple_v2.py \
     --sensor WV3 \
-    --init_model ADWM \
-    --lam1 0.187 \
-    --lam2 0.383
 
 # 使用配置文件
 python train/full_train_simple_v2.py --config configs/config_full_simple.yaml
@@ -78,15 +72,3 @@ L = ||down(X_blur(X)) - Tlrms||² + λ₁||X - w·Xnet||² + λ₂·MSE(pred_pan
 - pyyaml
 
 ---
-
-## 📝 提交记录
-
-| Commit | 描述 |
-|--------|------|
-| `afa0b89` | 添加配置文件支持 |
-| `103199f` | 添加核心源码和简化训练脚本 |
-
----
-
-**Author**: Yinsen  
-**GitHub**: [https://github.com/Y-sen-U/DVF](https://github.com/Y-sen-U/DVF)
